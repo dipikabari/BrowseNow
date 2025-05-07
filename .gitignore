@@ -1,0 +1,21 @@
+# Xcode
+DerivedData/
+.idea/
+*.xcworkspace
+xcuserdata/
+*.xcodeproj/project.xcworkspace/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/xcshareddata/xcschemes/*.xcscheme
+*.xcodeproj/xcshareddata/xcschemes/                                                                                                        xcschememanagement.plist                                                                            
+*.xcodeproj/project.xcworkspace/xcuserdata/                                           
+*.xcuserstate
+
+# macOS
+.DS_Store
+
+# Swift Package Manager                                                                                                    
+.build/
+
+# Logs
+*.log
+
