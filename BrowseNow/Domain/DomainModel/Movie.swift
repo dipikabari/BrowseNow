@@ -12,7 +12,9 @@ struct Movie {
     let title: String
     let overview: String
     let releaseDate: String
+    let originalLanguage: String
     let posterPath: String?
+    let backdropPath: String?
     let voteAverage: Double
 }
 

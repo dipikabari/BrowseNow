@@ -14,7 +14,9 @@ struct MovieMapper {
             title: dto.title,
             overview: dto.overview,
             releaseDate: dto.release_date,
+            originalLanguage: dto.original_language,
             posterPath: dto.poster_path,
+            backdropPath: dto.backdrop_path,
             voteAverage: dto.vote_average)
     }
     

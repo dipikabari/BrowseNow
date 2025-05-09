@@ -53,6 +53,7 @@ class MovieSearchViewController: UIViewController {
         view.addSubview(searchBar)
         
         tableView.dataSource = self
+        tableView.delegate = self
         tableView.register(MovieTableViewCell.self, forCellReuseIdentifier: MovieTableViewCell.reuseIdentifier)
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 140
@@ -157,6 +158,14 @@ extension MovieSearchViewController: UITableViewDataSource {
         if indexPath.row == movies.count - 1 {
             viewModel.loadMore()
         }
+    }
+}
+
+extension MovieSearchViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedMovie = movies[indexPath.row]
+        let detailVC = MovieDetailViewController(movie: selectedMovie)
+        navigationController?.pushViewController(detailVC, animated: true)
     }
 }
 

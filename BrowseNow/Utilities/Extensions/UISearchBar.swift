@@ -18,7 +18,7 @@ extension UISearchBar {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.widthAnchor.constraint(equalToConstant: 24).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: 24).isActive = true
-        imageView.tintColor = tintColor
+        imageView.tintColor =  .systemPurple
         searchTextField.leftView = imageView
     }
 }
