@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		9A0FE79F2DCC04E3003A6B1C /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 9A0FE79E2DCC04E3003A6B1C /* PromiseKit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		9AE7C72A2DCBB77F004E19B4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -65,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A0FE79F2DCC04E3003A6B1C /* PromiseKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,12 +90,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9A0FE79D2DCC04E3003A6B1C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		9AE7C70A2DCBB77D004E19B4 = {
 			isa = PBXGroup;
 			children = (
 				9AE7C7152DCBB77D004E19B4 /* BrowseNow */,
 				9AE7C72C2DCBB77F004E19B4 /* BrowseNowTests */,
 				9AE7C7362DCBB77F004E19B4 /* BrowseNowUITests */,
+				9A0FE79D2DCC04E3003A6B1C /* Frameworks */,
 				9AE7C7142DCBB77D004E19B4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -125,6 +138,7 @@
 			);
 			name = BrowseNow;
 			packageProductDependencies = (
+				9A0FE79E2DCC04E3003A6B1C /* PromiseKit */,
 			);
 			productName = BrowseNow;
 			productReference = 9AE7C7132DCBB77D004E19B4 /* BrowseNow.app */;
@@ -208,6 +222,9 @@
 			);
 			mainGroup = 9AE7C70A2DCBB77D004E19B4;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				9AE7C7752DCC021E004E19B4 /* XCRemoteSwiftPackageReference "PromiseKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9AE7C7142DCBB77D004E19B4 /* Products */;
 			projectDirPath = "";
@@ -569,6 +586,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9AE7C7752DCC021E004E19B4 /* XCRemoteSwiftPackageReference "PromiseKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mxcl/PromiseKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9A0FE79E2DCC04E3003A6B1C /* PromiseKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9AE7C7752DCC021E004E19B4 /* XCRemoteSwiftPackageReference "PromiseKit" */;
+			productName = PromiseKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9AE7C70B2DCBB77D004E19B4 /* Project object */;
 }

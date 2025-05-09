@@ -20,8 +20,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // guard let _ = (scene as? UIWindowScene) else { return }
         guard let windowScene = (scene as? UIWindowScene) else { return }
 
+        let networkClient = NetworkClient()
+        let service = MovieServiceImpl(client: networkClient)
+        let repository = MovieRepositoryImpl(service: service)
+        let useCase = GetMoviesUseCaseImpl(repository: repository)
+        let viewmodel = MovieSearchViewModel(useCase: useCase)
+        let viewController = MovieSearchViewController(viewModel: viewmodel)
+        
         let window = UIWindow(windowScene: windowScene)
-        window.rootViewController = UINavigationController(rootViewController: MovieSearchViewController())
+        window.rootViewController = UINavigationController(rootViewController: viewController)
         self.window = window
         window.makeKeyAndVisible()
     }
