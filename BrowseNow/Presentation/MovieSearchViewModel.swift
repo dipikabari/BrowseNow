@@ -21,7 +21,7 @@ protocol MovieSearchViewModelProtocol {
 final class MovieSearchViewModel: MovieSearchViewModelProtocol {
     private let useCase: GetMoviesUseCase
     private var currentQuery: String?
-    
+    private var topRatedCache: [Movie] = []
     private var isLoading = false
     
     var currentPage = 1
@@ -60,6 +60,9 @@ final class MovieSearchViewModel: MovieSearchViewModelProtocol {
             if let query = currentQuery, !query.isEmpty {
                 return useCase.execute(query: query, page: currentPage)
             } else {
+                if !append && currentPage == 1 && !topRatedCache.isEmpty {
+                    return Promise.value(topRatedCache)
+                }
                 return useCase.fetchTopRated(page: currentPage)
             }
         }()
@@ -68,6 +71,10 @@ final class MovieSearchViewModel: MovieSearchViewModelProtocol {
             guard let self = self else { return }
             Logger.log("Parsed \(movies.count) movies", level: .info)
             self.isLoading = false
+            
+            if !append && self.currentQuery == nil && self.currentPage == 1 {
+                self.topRatedCache = movies
+            }
             
             if movies.isEmpty {
                 self.onSearchError?("No movies found. Please try a different search.")

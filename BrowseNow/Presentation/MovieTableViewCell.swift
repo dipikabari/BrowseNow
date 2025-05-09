@@ -15,6 +15,7 @@ final class MovieTableViewCell: UITableViewCell {
     private let ratingLabel = UILabel()
     private let horizontalStack = UIStackView()
     private let textStackView = UIStackView()
+    private var imageLoader: ImageLoaderProtocol?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -72,27 +73,17 @@ final class MovieTableViewCell: UITableViewCell {
         let movieRating = String(format: "Rating: %.1f/10", movie.voteAverage)
         ratingLabel.text = movieRating
         
-        if let urlString = movie.fullPosterURL {
-            loadImage(from: urlString)
+        if let urlString = movie.fullPosterURL,
+           let url = URL(string: urlString) {
+            ImageLoader.shared.loadImage(from: url) { [weak self] image in
+                self?.movieImageView.image = image
+                self?.setNeedsLayout()
+            }
         } else {
             movieImageView.image = UIImage(systemName: "xmark.octagon")
         }
     }
-    
-    private func loadImage(from urlString: String) {
-        guard let url = URL(string: urlString) else {
-            movieImageView.image = UIImage(systemName: "xmark.octagon")
-            return
-        }
-        
-        URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
-            guard let self = self, let data = data, error == nil else { return }
-            DispatchQueue.main.async {
-                self.movieImageView.image = UIImage(data: data)
-            }
-        }.resume()
-    }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

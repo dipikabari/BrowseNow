@@ -8,7 +8,6 @@
 import UIKit
 
 final class MovieDetailViewController: UIViewController {
-    //private let movie: Movie
     private let viewModel: MovieDetailViewModel
         
     // MARK: - UI Elements
@@ -67,11 +66,6 @@ final class MovieDetailViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(contentStackView)
         
-//        [backdropImageView, titleLabel, ratingLabel, languageLabel, releaseDateLabel, overviewLabel].forEach {
-//            $0.translatesAutoresizingMaskIntoConstraints = false
-//            contentView.addSubview($0)
-//        }
-        
         applyConstraints()
     }
     
@@ -82,9 +76,11 @@ final class MovieDetailViewController: UIViewController {
         languageLabel.text = "Language: \(viewModel.languageDisplay)"
         ratingLabel.text = "Rating: \(viewModel.formattedRating)/10"
         overviewLabel.text = viewModel.overview
-        
+          
         if let url = viewModel.backdropURL {
-            loadImage(from: url)
+            ImageLoader.shared.loadImage(from: url) { [weak self] image in
+                self?.backdropImageView.image = image
+            }
         }
     }
 
@@ -102,7 +98,6 @@ final class MovieDetailViewController: UIViewController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         backdropImageView.translatesAutoresizingMaskIntoConstraints = false
         contentStackView.translatesAutoresizingMaskIntoConstraints = false
-          // contentView.translatesAutoresizingMaskIntoConstraints = false
 
        NSLayoutConstraint.activate([
            scrollView.topAnchor.constraint(equalTo: view.topAnchor),

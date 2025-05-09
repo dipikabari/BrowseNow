@@ -73,7 +73,6 @@ class MovieSearchViewController: UIViewController {
                 self.tableView.isHidden = newMovies.isEmpty
                 
                 if self.viewModel.currentPage == 1 {
-                    Logger.log("\(newMovies.count) movies fetched initially", level: .info)
                     self.movies = newMovies
                 } else {
                     self.movies.append(contentsOf: newMovies)
