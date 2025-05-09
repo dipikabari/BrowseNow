@@ -15,7 +15,7 @@ class MovieSearchViewController: UIViewController {
     
     private let noResultsLabel: UILabel = {
         let label = UILabel()
-        label.text = "No movies found.\nTry a different search."
+        label.text = "Something went wrong.\nPlease try again."
         label.textAlignment = .center
         label.textColor = .secondaryLabel
         label.numberOfLines = 0
@@ -45,10 +45,12 @@ class MovieSearchViewController: UIViewController {
     // MARK: Setup
     private func setupUI() {
         view.backgroundColor = .systemBackground
-        title = "Movie Search"
+        title = "Top Movies"
  
-        searchBar.placeholder = "Search for movies..."
+        searchBar.placeholder = "Search movie..."
         searchBar.setLeftImage(UIImage(systemName: "magnifyingglass"))
+        searchBar.layer.cornerRadius = 8
+        searchBar.searchTextField.adjustsFontForContentSizeCategory = true
         searchBar.delegate = self
         view.addSubview(searchBar)
         
@@ -71,6 +73,7 @@ class MovieSearchViewController: UIViewController {
                 self.tableView.isHidden = newMovies.isEmpty
                 
                 if self.viewModel.currentPage == 1 {
+                    Logger.log("\(newMovies.count) movies fetched initially", level: .info)
                     self.movies = newMovies
                 } else {
                     self.movies.append(contentsOf: newMovies)
@@ -81,7 +84,6 @@ class MovieSearchViewController: UIViewController {
         
         viewModel.onSearchError = { [weak self] error in
             DispatchQueue.main.async {
-                self?.noResultsLabel.text = "Something went wrong.\nPlease try again."
                 self?.noResultsLabel.isHidden = false
                 self?.tableView.isHidden = true
             }
@@ -110,17 +112,7 @@ class MovieSearchViewController: UIViewController {
             noResultsLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
     }
-
-    private func showNoResultsAlert() {
-        let alert = UIAlertController(
-            title: "No Results",
-            message: "We couldn't find any movies matching your search. Please try again with a different keyword.",
-            preferredStyle: .alert
-        )
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-        present(alert, animated: true)
-    }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -130,6 +122,7 @@ class MovieSearchViewController: UIViewController {
 extension MovieSearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let query = searchBar.text, !query.isEmpty else { return }
+        Logger.log("Searched text: \(query)", level: .info)
         viewModel.search(query: query)
         searchBar.resignFirstResponder()
     }

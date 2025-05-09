@@ -15,16 +15,17 @@ final class MovieDetailViewController: UIViewController {
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     
-    private let imageView = UIImageView()
+    private let backdropImageView = UIImageView()
     private let titleLabel = UILabel()
     private let ratingLabel = UILabel()
     private let languageLabel = UILabel()
     private let releaseDateLabel = UILabel()
     private let overviewLabel = UILabel()
     
+    private lazy var contentStackView = UIStackView(arrangedSubviews: [backdropImageView, titleLabel, ratingLabel, languageLabel, releaseDateLabel, overviewLabel])
+    
     // MARK: - Init
     init(movie: Movie) {
-        //self.movie = movie
         self.viewModel = MovieDetailViewModel(movie: movie)
         super.init(nibName: nil, bundle: nil)
     }
@@ -39,11 +40,13 @@ final class MovieDetailViewController: UIViewController {
     
     // MARK: - Setup UI
     private func setupUI() {
-        imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
+        backdropImageView.contentMode = .scaleAspectFill
+        backdropImageView.clipsToBounds = true
         
         titleLabel.font = .boldSystemFont(ofSize: 22)
         titleLabel.numberOfLines = 0
+        titleLabel.lineBreakMode = .byWordWrapping
+        titleLabel.setContentHuggingPriority(.required, for: .vertical)
         
         ratingLabel.font = .systemFont(ofSize: 16)
         
@@ -51,17 +54,23 @@ final class MovieDetailViewController: UIViewController {
        
         releaseDateLabel.font = .systemFont(ofSize: 14)
         
-        overviewLabel.font = .systemFont(ofSize: 15)
+        overviewLabel.font = .systemFont(ofSize: 18)
         overviewLabel.numberOfLines = 0
+        overviewLabel.lineBreakMode = .byWordWrapping
+        overviewLabel.textColor = .systemPurple
+        
+        contentStackView.axis = .vertical
+        contentStackView.spacing = 24
+        contentStackView.setCustomSpacing(8, after: titleLabel)
         
         // Add scrollable content
         view.addSubview(scrollView)
-        scrollView.addSubview(contentView)
+        scrollView.addSubview(contentStackView)
         
-        [imageView, titleLabel, ratingLabel, languageLabel, releaseDateLabel, overviewLabel].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            contentView.addSubview($0)
-        }
+//        [backdropImageView, titleLabel, ratingLabel, languageLabel, releaseDateLabel, overviewLabel].forEach {
+//            $0.translatesAutoresizingMaskIntoConstraints = false
+//            contentView.addSubview($0)
+//        }
         
         applyConstraints()
     }
@@ -83,7 +92,7 @@ final class MovieDetailViewController: UIViewController {
         URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
             guard let self = self, let data = data else { return }
             DispatchQueue.main.async {
-                self.imageView.image = UIImage(data: data)
+                self.backdropImageView.image = UIImage(data: data)
             }
         }.resume()
     }
@@ -91,43 +100,26 @@ final class MovieDetailViewController: UIViewController {
     // MARK: - Constraints
     private func applyConstraints() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-           contentView.translatesAutoresizingMaskIntoConstraints = false
+        backdropImageView.translatesAutoresizingMaskIntoConstraints = false
+        contentStackView.translatesAutoresizingMaskIntoConstraints = false
+          // contentView.translatesAutoresizingMaskIntoConstraints = false
 
-           NSLayoutConstraint.activate([
-               scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-               scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-               scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-               scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+       NSLayoutConstraint.activate([
+           scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+           scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+           scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+           scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
-               contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-               contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-               contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-               contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-               contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+           backdropImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+           backdropImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+           backdropImageView.heightAnchor.constraint(equalTo: backdropImageView.widthAnchor, multiplier: 11 / 16, constant: 0),
 
-               imageView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
-               imageView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor),
-               imageView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor),
-               imageView.heightAnchor.constraint(equalToConstant: 220),
+           contentStackView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 24),
+           contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
+           contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
+           contentStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -24)
+       ])
 
-               titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 16),
-               titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-               titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-
-               ratingLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
-               ratingLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-
-               languageLabel.topAnchor.constraint(equalTo: ratingLabel.bottomAnchor, constant: 4),
-               languageLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-               
-               releaseDateLabel.topAnchor.constraint(equalTo: languageLabel.bottomAnchor, constant: 4),
-               releaseDateLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-
-               overviewLabel.topAnchor.constraint(equalTo: releaseDateLabel.bottomAnchor, constant: 12),
-               overviewLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-               overviewLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
-               overviewLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
-           ])
     }
     
     required init?(coder: NSCoder) {

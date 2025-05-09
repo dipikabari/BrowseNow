@@ -12,7 +12,6 @@ final class MovieTableViewCell: UITableViewCell {
     
     private let movieImageView = UIImageView()
     private let titleLabel = UILabel()
-    //private let overview = UILabel()
     private let ratingLabel = UILabel()
     private let horizontalStack = UIStackView()
     private let textStackView = UIStackView()
@@ -29,11 +28,6 @@ final class MovieTableViewCell: UITableViewCell {
         titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
         titleLabel.numberOfLines = 0
         titleLabel.lineBreakMode = .byWordWrapping
-        
-//        overview.font = UIFont.systemFont(ofSize: 14)
-//        overview.textColor = .darkGray
-//        overview.numberOfLines = 0
-//        overview.lineBreakMode = .byWordWrapping
 
         ratingLabel.font = UIFont.systemFont(ofSize: 14)
         ratingLabel.textColor = .systemPurple
@@ -42,7 +36,6 @@ final class MovieTableViewCell: UITableViewCell {
         textStackView.spacing = 4
         
         textStackView.addArrangedSubview(titleLabel)
-        //textStackView.addArrangedSubview(overview)
         textStackView.addArrangedSubview(ratingLabel)
 
         horizontalStack.addArrangedSubview(movieImageView)
@@ -75,7 +68,7 @@ final class MovieTableViewCell: UITableViewCell {
     
     func configure(with movie: Movie) {
         titleLabel.text = movie.title
-        //overview.text = "\(movie.overview)"
+
         let movieRating = String(format: "Rating: %.1f/10", movie.voteAverage)
         ratingLabel.text = movieRating
         

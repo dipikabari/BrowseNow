@@ -17,7 +17,7 @@ final class MovieDetailViewModel {
     var title: String { movie.title }
 
     var formattedRating: String {
-        String(format: "%.2f", movie.voteAverage)
+        String(format: "%.1f", movie.voteAverage)
     }
 
     var formattedReleaseDate: String {
@@ -36,13 +36,9 @@ final class MovieDetailViewModel {
     }
 
     var overview: String { movie.overview }
-    var posterURL: URL? {
-        guard let path = movie.posterPath else { return nil }
-        return URL(string: "https://image.tmdb.org/t/p/w500\(path)")
-    }
 
     var backdropURL: URL? {
-        guard let path = movie.backdropPath else { return nil }
-        return URL(string: "https://image.tmdb.org/t/p/w780\(path)")
+        guard let path = movie.fullBackdropURL else { return nil }
+        return URL(string: path)
     }
 }

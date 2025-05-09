@@ -21,7 +21,12 @@ struct Movie {
 extension Movie {
     var fullPosterURL: String? {
         guard let path = posterPath else { return nil }
-        return "\(APIConstants.imageBaseURLString)\(path)"
+        return "\(APIConstants.posterImageBaseURLString)\(path)"
+    }
+    
+    var fullBackdropURL: String? {
+        guard let path = backdropPath else { return nil }
+        return "\(APIConstants.backdropImageBaseURLString)\(path)"
     }
 }
 

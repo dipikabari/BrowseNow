@@ -39,6 +39,7 @@ final class MovieSearchViewModel: MovieSearchViewModelProtocol {
     }
     
     func search(query: String) {
+        Logger.log("Searched text: \(query)", level: .info)
         currentQuery = query
         currentPage = 1
         fetchMovies()
@@ -51,6 +52,8 @@ final class MovieSearchViewModel: MovieSearchViewModelProtocol {
     }
     
     private func fetchMovies(append: Bool = false) {
+        guard !isLoading else { return }
+        
         isLoading = true
 
         let fetchPromise: Promise<[Movie]> = {
@@ -62,17 +65,21 @@ final class MovieSearchViewModel: MovieSearchViewModelProtocol {
         }()
 
         fetchPromise.done { [weak self] movies in
+            guard let self = self else { return }
             Logger.log("Parsed \(movies.count) movies", level: .info)
-            self?.isLoading = false
+            self.isLoading = false
             
             if movies.isEmpty {
-                self?.onSearchError?(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "No movies found. Please try a different search."]) as! String)
+                self.onSearchError?("No movies found. Please try a different search.")
             } else {
-                self?.onMoviesFetched?(movies)
+                self.onMoviesFetched?(movies)
             }
         }.catch { [weak self] error in
-            self?.isLoading = false
-            self?.onSearchError?("Error: \(error.localizedDescription)")
+            guard let self = self else { return }
+            self.isLoading = false
+            
+            self.onSearchError?("Error: \(error.localizedDescription)")
+            
             Logger.log("\(error.localizedDescription)", level: .error)
         }
     }

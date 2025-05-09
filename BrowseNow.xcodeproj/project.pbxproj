@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9A0FE79F2DCC04E3003A6B1C /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 9A0FE79E2DCC04E3003A6B1C /* PromiseKit */; };
+		9ADE75CF2DCE2088007838A3 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 9ADE75CE2DCE2088007838A3 /* PromiseKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,7 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9A0FE79F2DCC04E3003A6B1C /* PromiseKit in Frameworks */,
+				9ADE75CF2DCE2088007838A3 /* PromiseKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,7 +138,7 @@
 			);
 			name = BrowseNow;
 			packageProductDependencies = (
-				9A0FE79E2DCC04E3003A6B1C /* PromiseKit */,
+				9ADE75CE2DCE2088007838A3 /* PromiseKit */,
 			);
 			productName = BrowseNow;
 			productReference = 9AE7C7132DCBB77D004E19B4 /* BrowseNow.app */;
@@ -223,7 +223,7 @@
 			mainGroup = 9AE7C70A2DCBB77D004E19B4;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				9AE7C7752DCC021E004E19B4 /* XCRemoteSwiftPackageReference "PromiseKit" */,
+				9ADE75CD2DCE2074007838A3 /* XCRemoteSwiftPackageReference "PromiseKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9AE7C7142DCBB77D004E19B4 /* Products */;
@@ -309,6 +309,7 @@
 				DEVELOPMENT_TEAM = Y79Q6F3568;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BrowseNow/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -336,6 +337,7 @@
 				DEVELOPMENT_TEAM = Y79Q6F3568;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BrowseNow/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -588,7 +590,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		9AE7C7752DCC021E004E19B4 /* XCRemoteSwiftPackageReference "PromiseKit" */ = {
+		9ADE75CD2DCE2074007838A3 /* XCRemoteSwiftPackageReference "PromiseKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mxcl/PromiseKit.git";
 			requirement = {
@@ -599,9 +601,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		9A0FE79E2DCC04E3003A6B1C /* PromiseKit */ = {
+		9ADE75CE2DCE2088007838A3 /* PromiseKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 9AE7C7752DCC021E004E19B4 /* XCRemoteSwiftPackageReference "PromiseKit" */;
+			package = 9ADE75CD2DCE2074007838A3 /* XCRemoteSwiftPackageReference "PromiseKit" */;
 			productName = PromiseKit;
 		};
 /* End XCSwiftPackageProductDependency section */

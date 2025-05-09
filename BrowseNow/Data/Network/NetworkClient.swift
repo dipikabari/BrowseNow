@@ -20,6 +20,8 @@ final class NetworkClient: NetworkClientProtocol {
     }
     
     func request<T: Decodable>(endPoint: URLRequest) -> Promise<T> {
+        Logger.log("endPoint: \(endPoint)", level: .info)
+        
         return Promise<T> { seal in
             session.dataTask(with: endPoint) { data, response, error in
                 if let error = error {
