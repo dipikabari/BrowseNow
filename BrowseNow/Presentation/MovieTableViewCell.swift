@@ -73,6 +73,9 @@ final class MovieTableViewCell: UITableViewCell {
         let movieRating = String(format: Constants.Strings.ratingFormat, movie.voteAverage)
         ratingLabel.text = movieRating
         
+        accessibilityLabel = Constants.Strings.accessibilityLabel(movie.title, movieRating)
+        accessibilityHint = Constants.Strings.accessibilityHint
+        
         if let urlString = movie.fullPosterURL,
            let url = URL(string: urlString) {
             ImageLoader.shared.loadImage(from: url) { [weak self] image in
@@ -95,6 +98,11 @@ extension MovieTableViewCell {
             static let reuseIdentifier = "MovieTableViewCell"
             static let ratingFormat = "Rating: %.1f/10"
             static let placeholderImageName = "xmark.octagon"
+            static func accessibilityLabel(_ movieTitle: String, _ movieRating: String) -> String {
+                let spokenRating = movieRating.replacingOccurrences(of: "/", with: " out of ")
+                return "\(movieTitle), \(spokenRating)"
+            }
+            static let accessibilityHint = "Tap to view movie details"
         }
         
         enum UI {

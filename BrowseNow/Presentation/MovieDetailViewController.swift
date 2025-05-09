@@ -44,21 +44,15 @@ final class MovieDetailViewController: UIViewController {
         backdropImageView.contentMode = .scaleAspectFill
         backdropImageView.clipsToBounds = true
         
-        titleLabel.font = .boldSystemFont(ofSize: Constants.UI.titleFontSize)
-        titleLabel.numberOfLines = 0
-        titleLabel.lineBreakMode = .byWordWrapping
-        titleLabel.setContentHuggingPriority(.required, for: .vertical)
+        configureTitleLabel()
         
-        ratingLabel.font = .systemFont(ofSize: Constants.UI.subtitleFontSize)
+        configureRatingLabel()
         
-        languageLabel.font = .systemFont(ofSize: Constants.UI.subtitleFontSize)
-       
-        releaseDateLabel.font = .systemFont(ofSize: Constants.UI.subtitleFontSize)
+        configureLanguageLabel()
+
+        configureReleaseLabel()
         
-        overviewLabel.font = .systemFont(ofSize: Constants.UI.overviewFontSize)
-        overviewLabel.numberOfLines = 0
-        overviewLabel.lineBreakMode = .byWordWrapping
-        overviewLabel.textColor = .systemPurple
+        configireOverViewLabel()
         
         contentStackView.axis = .vertical
         contentStackView.spacing = Constants.UI.stackViewSpacing
@@ -117,6 +111,49 @@ final class MovieDetailViewController: UIViewController {
 }
 
 extension MovieDetailViewController {
+    private func configureTitleLabel() {
+        titleLabel.font = .boldSystemFont(ofSize: Constants.UI.titleFontSize)
+        titleLabel.numberOfLines = 0
+        titleLabel.lineBreakMode = .byWordWrapping
+        titleLabel.setContentHuggingPriority(.required, for: .vertical)
+        titleLabel.adjustsFontForContentSizeCategory = true
+        titleLabel.accessibilityLabel = Constants.Strings.titleAccessibilityLabel
+        titleLabel.accessibilityValue = viewModel.title
+    }
+    
+    private func configureRatingLabel() {
+        ratingLabel.font = .systemFont(ofSize: Constants.UI.subtitleFontSize)
+        ratingLabel.adjustsFontForContentSizeCategory = true
+        ratingLabel.accessibilityLabel = Constants.Strings.ratingAccessibilityLabel
+        ratingLabel.accessibilityValue = viewModel.formattedRating
+    }
+    
+    private func configureLanguageLabel() {
+        languageLabel.font = .systemFont(ofSize: Constants.UI.subtitleFontSize)
+        languageLabel.adjustsFontForContentSizeCategory = true
+        languageLabel.accessibilityLabel = Constants.Strings.languageAccessibilityLabel
+        languageLabel.accessibilityValue = viewModel.languageDisplay
+    }
+    
+    private func configureReleaseLabel() {
+        releaseDateLabel.font = .systemFont(ofSize: Constants.UI.subtitleFontSize)
+        releaseDateLabel.adjustsFontForContentSizeCategory = true
+        releaseDateLabel.accessibilityLabel = Constants.Strings.releaseDateAccessibilityLabel
+        releaseDateLabel.accessibilityValue = viewModel.formattedReleaseDate
+    }
+    
+    private func configireOverViewLabel() {
+        overviewLabel.font = .systemFont(ofSize: Constants.UI.overviewFontSize)
+        overviewLabel.numberOfLines = 0
+        overviewLabel.lineBreakMode = .byWordWrapping
+        overviewLabel.adjustsFontForContentSizeCategory = true
+        overviewLabel.textColor = .systemPurple
+        overviewLabel.accessibilityLabel = Constants.Strings.overviewAccessibilityLabel
+        overviewLabel.accessibilityValue = viewModel.overview
+    }
+}
+
+extension MovieDetailViewController {
     private enum Constants {
         enum Strings {
             static func releaseDate(_ formattedReleaseDate: String) -> String {
@@ -130,6 +167,11 @@ extension MovieDetailViewController {
             static func ratingLabel(_ rating: String) -> String {
                 "Rating: \(rating)/10"
             }
+            static let titleAccessibilityLabel = "Title"
+            static let releaseDateAccessibilityLabel = "Release Date"
+            static let languageAccessibilityLabel = "Language"
+            static let ratingAccessibilityLabel = "Rating"
+            static let overviewAccessibilityLabel = "Overview"
         }
         
         enum UI {

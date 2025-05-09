@@ -39,6 +39,7 @@ class MovieSearchViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupBindings()
+        setupAccessibility()
         viewModel.loadInitialMovies()
     }
 
@@ -156,26 +157,6 @@ extension MovieSearchViewController: UITableViewDelegate {
 }
 
 extension MovieSearchViewController {
-    private enum Constants {
-        enum Strings {
-            static let topMoviesTitle = "Top Movies"
-            static let placeholderText = "Search movie..."
-            static let magnifyingGlassIconName = "magnifyingglass"
-            static let noResultLabelText = "Something went wrong.\nPlease try again."
-        }
-        
-        enum UI {
-            static let cornerRadius: CGFloat = 8
-            static let rowHeight: CGFloat = 140
-            static let currentPage: Int = 1
-            static let labelSize: CGFloat = 16
-            static let titleFontSize: CGFloat = 22
-        }
-        
-    }
-}
-
-private extension MovieSearchViewController {
      func configureSearchBar() {
          searchBar.placeholder = Constants.Strings.placeholderText
          searchBar.setLeftImage(UIImage(systemName: Constants.Strings.magnifyingGlassIconName))
@@ -190,5 +171,39 @@ private extension MovieSearchViewController {
         tableView.register(MovieTableViewCell.self, forCellReuseIdentifier: MovieTableViewCell.reuseIdentifier)
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = Constants.UI.rowHeight
+    }
+    
+   func setupAccessibility() {
+       searchBar.accessibilityLabel = Constants.Strings.searchBarAccessibilityLabel
+       searchBar.accessibilityHint = Constants.Strings.searchBarAccessibilityHint
+       
+       tableView.accessibilityLabel = Constants.Strings.tableViewAccessibilityLabel
+        
+       noResultsLabel.isAccessibilityElement = true
+       noResultsLabel.accessibilityLabel = Constants.Strings.noResultLabelText
+       noResultsLabel.accessibilityTraits = .staticText
+    }
+}
+
+extension MovieSearchViewController {
+    private enum Constants {
+        enum Strings {
+            static let topMoviesTitle = "Top Movies"
+            static let placeholderText = "Search movie..."
+            static let magnifyingGlassIconName = "magnifyingglass"
+            static let noResultLabelText = "Something went wrong.\nPlease try again."
+            static let searchBarAccessibilityLabel = "Search for movies"
+            static let searchBarAccessibilityHint = "Enter a movie title to search"
+            static let tableViewAccessibilityLabel = "List of movies"
+        }
+        
+        enum UI {
+            static let cornerRadius: CGFloat = 8
+            static let rowHeight: CGFloat = 140
+            static let currentPage: Int = 1
+            static let labelSize: CGFloat = 16
+            static let titleFontSize: CGFloat = 22
+        }
+        
     }
 }
