@@ -8,7 +8,7 @@
 import UIKit
 
 final class MovieTableViewCell: UITableViewCell {
-    static let reuseIdentifier = "MovieTableViewCell"
+    static let reuseIdentifier = Constants.Strings.reuseIdentifier
     
     private let movieImageView = UIImageView()
     private let titleLabel = UILabel()
@@ -26,15 +26,15 @@ final class MovieTableViewCell: UITableViewCell {
         movieImageView.contentMode = .scaleAspectFit
         movieImageView.clipsToBounds = true
         
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        titleLabel.font = UIFont.boldSystemFont(ofSize: Constants.UI.titleFontSize)
         titleLabel.numberOfLines = 0
         titleLabel.lineBreakMode = .byWordWrapping
 
-        ratingLabel.font = UIFont.systemFont(ofSize: 14)
+        ratingLabel.font = UIFont.systemFont(ofSize: Constants.UI.ratingFontSize)
         ratingLabel.textColor = .systemPurple
 
         textStackView.axis = .vertical
-        textStackView.spacing = 4
+        textStackView.spacing = Constants.UI.textStackViewSpacing
         
         textStackView.addArrangedSubview(titleLabel)
         textStackView.addArrangedSubview(ratingLabel)
@@ -42,7 +42,7 @@ final class MovieTableViewCell: UITableViewCell {
         horizontalStack.addArrangedSubview(movieImageView)
         horizontalStack.addArrangedSubview(textStackView)
         horizontalStack.axis = .horizontal
-        horizontalStack.spacing = 12
+        horizontalStack.spacing = Constants.UI.defaultSpacing
         horizontalStack.alignment = .top
        
 
@@ -57,20 +57,20 @@ final class MovieTableViewCell: UITableViewCell {
         movieImageView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            horizontalStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            horizontalStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
-            horizontalStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
-            horizontalStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+            horizontalStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.UI.stackSpacing),
+            horizontalStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.UI.defaultSpacing),
+            horizontalStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.UI.defaultSpacing),
+            horizontalStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.UI.stackSpacing),
             
-            movieImageView.widthAnchor.constraint(equalToConstant: 80),
-            movieImageView.heightAnchor.constraint(equalToConstant: 120)
+            movieImageView.widthAnchor.constraint(equalToConstant: Constants.UI.imageWidth),
+            movieImageView.heightAnchor.constraint(equalToConstant: Constants.UI.imageHeight)
         ])
     }
     
     func configure(with movie: Movie) {
         titleLabel.text = movie.title
 
-        let movieRating = String(format: "Rating: %.1f/10", movie.voteAverage)
+        let movieRating = String(format: Constants.Strings.ratingFormat, movie.voteAverage)
         ratingLabel.text = movieRating
         
         if let urlString = movie.fullPosterURL,
@@ -80,11 +80,33 @@ final class MovieTableViewCell: UITableViewCell {
                 self?.setNeedsLayout()
             }
         } else {
-            movieImageView.image = UIImage(systemName: "xmark.octagon")
+            movieImageView.image = UIImage(systemName: Constants.Strings.placeholderImageName)
         }
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension MovieTableViewCell {
+    enum Constants {
+        enum Strings {
+            static let reuseIdentifier = "MovieTableViewCell"
+            static let ratingFormat = "Rating: %.1f/10"
+            static let placeholderImageName = "xmark.octagon"
+        }
+        
+        enum UI {
+            static let defaultSpacing: CGFloat = 12
+            static let stackSpacing: CGFloat = 8
+            static let stackViewSpacing: CGFloat = 24
+            static let textStackViewSpacing: CGFloat = 4
+            static let titleFontSize: CGFloat = 16
+            static let ratingFontSize: CGFloat = 14
+            static let imageWidth: CGFloat = 80
+            static let imageHeight: CGFloat = 120
+        }
+        
     }
 }

@@ -21,7 +21,9 @@ final class MovieDetailViewController: UIViewController {
     private let releaseDateLabel = UILabel()
     private let overviewLabel = UILabel()
     
-    private lazy var contentStackView = UIStackView(arrangedSubviews: [backdropImageView, titleLabel, ratingLabel, languageLabel, releaseDateLabel, overviewLabel])
+    private lazy var contentStackView = UIStackView(arrangedSubviews: [
+        backdropImageView, titleLabel, ratingLabel, languageLabel, releaseDateLabel, overviewLabel
+    ])
     
     // MARK: - Init
     init(movie: Movie) {
@@ -42,25 +44,25 @@ final class MovieDetailViewController: UIViewController {
         backdropImageView.contentMode = .scaleAspectFill
         backdropImageView.clipsToBounds = true
         
-        titleLabel.font = .boldSystemFont(ofSize: 22)
+        titleLabel.font = .boldSystemFont(ofSize: Constants.UI.titleFontSize)
         titleLabel.numberOfLines = 0
         titleLabel.lineBreakMode = .byWordWrapping
         titleLabel.setContentHuggingPriority(.required, for: .vertical)
         
-        ratingLabel.font = .systemFont(ofSize: 16)
+        ratingLabel.font = .systemFont(ofSize: Constants.UI.subtitleFontSize)
         
-        languageLabel.font = .systemFont(ofSize: 14)
+        languageLabel.font = .systemFont(ofSize: Constants.UI.subtitleFontSize)
        
-        releaseDateLabel.font = .systemFont(ofSize: 14)
+        releaseDateLabel.font = .systemFont(ofSize: Constants.UI.subtitleFontSize)
         
-        overviewLabel.font = .systemFont(ofSize: 18)
+        overviewLabel.font = .systemFont(ofSize: Constants.UI.overviewFontSize)
         overviewLabel.numberOfLines = 0
         overviewLabel.lineBreakMode = .byWordWrapping
         overviewLabel.textColor = .systemPurple
         
         contentStackView.axis = .vertical
-        contentStackView.spacing = 24
-        contentStackView.setCustomSpacing(8, after: titleLabel)
+        contentStackView.spacing = Constants.UI.stackViewSpacing
+        contentStackView.setCustomSpacing(Constants.UI.customSpacing, after: titleLabel)
         
         // Add scrollable content
         view.addSubview(scrollView)
@@ -72,9 +74,9 @@ final class MovieDetailViewController: UIViewController {
     // MARK: - Configure with Movie
     private func populateData() {
         titleLabel.text = viewModel.title
-        releaseDateLabel.text = "Release Date: \(viewModel.formattedReleaseDate)"
-        languageLabel.text = "Language: \(viewModel.languageDisplay)"
-        ratingLabel.text = "Rating: \(viewModel.formattedRating)/10"
+        releaseDateLabel.text = Constants.Strings.releaseDate(viewModel.formattedReleaseDate)
+        languageLabel.text = Constants.Strings.language(viewModel.languageDisplay)
+        ratingLabel.text = Constants.Strings.ratingLabel(viewModel.formattedRating)
         overviewLabel.text = viewModel.overview
           
         if let url = viewModel.backdropURL {
@@ -84,15 +86,6 @@ final class MovieDetailViewController: UIViewController {
         }
     }
 
-    private func loadImage(from url: URL) {
-        URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
-            guard let self = self, let data = data else { return }
-            DispatchQueue.main.async {
-                self.backdropImageView.image = UIImage(data: data)
-            }
-        }.resume()
-    }
-    
     // MARK: - Constraints
     private func applyConstraints() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -105,14 +98,14 @@ final class MovieDetailViewController: UIViewController {
            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
-           backdropImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-           backdropImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-           backdropImageView.heightAnchor.constraint(equalTo: backdropImageView.widthAnchor, multiplier: 11 / 16, constant: 0),
+           backdropImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.UI.defaultSpacing),
+           backdropImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.UI.defaultSpacing),
+           backdropImageView.heightAnchor.constraint(equalTo: backdropImageView.widthAnchor, multiplier: Constants.UI.imageMultiplier, constant: 0),
 
-           contentStackView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 24),
-           contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
-           contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
-           contentStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -24)
+           contentStackView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: Constants.UI.stackViewSpacing),
+           contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: Constants.UI.defaultSpacing),
+           contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -Constants.UI.defaultSpacing),
+           contentStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -Constants.UI.stackViewSpacing)
        ])
 
     }
@@ -121,4 +114,33 @@ final class MovieDetailViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+}
+
+extension MovieDetailViewController {
+    private enum Constants {
+        enum Strings {
+            static func releaseDate(_ formattedReleaseDate: String) -> String {
+                "Release Date: \(formattedReleaseDate)"
+            }
+            
+            static func language(_ languageDisplay: String) -> String {
+                "Language: \(languageDisplay)"
+            }
+            
+            static func ratingLabel(_ rating: String) -> String {
+                "Rating: \(rating)/10"
+            }
+        }
+        
+        enum UI {
+            static let defaultSpacing: CGFloat = 16
+            static let stackViewSpacing: CGFloat = 24
+            static let customSpacing: CGFloat = 8
+            static let imageMultiplier: CGFloat = 11 / 16
+            static let titleFontSize: CGFloat = 22
+            static let subtitleFontSize: CGFloat = 14
+            static let overviewFontSize: CGFloat = 18
+        }
+        
+    }
 }

@@ -17,13 +17,13 @@ final class MovieDetailViewModel {
     var title: String { movie.title }
 
     var formattedRating: String {
-        String(format: "%.1f", movie.voteAverage)
+        String(format: Constants.ratingformat, movie.voteAverage)
     }
 
     var formattedReleaseDate: String {
         let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "en_GB")
-        formatter.dateFormat = "yyyy-MM-dd"
+        formatter.locale = Locale(identifier: Constants.localeIdentifier)
+        formatter.dateFormat = Constants.dateFormat
         guard let date = formatter.date(from: movie.releaseDate) else { return movie.releaseDate }
 
         formatter.dateStyle = .long
@@ -31,7 +31,7 @@ final class MovieDetailViewModel {
     }
 
     var languageDisplay: String {
-        let locale = Locale(identifier: "en_GB")
+        let locale = Locale(identifier: Constants.localeIdentifier)
         return locale.localizedString(forLanguageCode: movie.originalLanguage) ?? movie.originalLanguage.uppercased()
     }
 
@@ -40,5 +40,13 @@ final class MovieDetailViewModel {
     var backdropURL: URL? {
         guard let path = movie.fullBackdropURL else { return nil }
         return URL(string: path)
+    }
+}
+
+extension MovieDetailViewModel {
+    enum Constants {
+        static let ratingformat = "%.1f"
+        static let localeIdentifier = "en_GB"
+        static let dateFormat = "yyyy-MM-dd"
     }
 }

@@ -15,11 +15,11 @@ class MovieSearchViewController: UIViewController {
     
     private let noResultsLabel: UILabel = {
         let label = UILabel()
-        label.text = "Something went wrong.\nPlease try again."
+        label.text = Constants.Strings.noResultLabelText
         label.textAlignment = .center
         label.textColor = .secondaryLabel
         label.numberOfLines = 0
-        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        label.font = UIFont.systemFont(ofSize: Constants.UI.labelSize, weight: .medium)
         label.isHidden = true
         return label
     }()
@@ -43,22 +43,16 @@ class MovieSearchViewController: UIViewController {
     }
 
     // MARK: Setup
+    
+    
     private func setupUI() {
         view.backgroundColor = .systemBackground
-        title = "Top Movies"
+        title = Constants.Strings.topMoviesTitle
  
-        searchBar.placeholder = "Search movie..."
-        searchBar.setLeftImage(UIImage(systemName: "magnifyingglass"))
-        searchBar.layer.cornerRadius = 8
-        searchBar.searchTextField.adjustsFontForContentSizeCategory = true
-        searchBar.delegate = self
+        configureSearchBar()
         view.addSubview(searchBar)
         
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.register(MovieTableViewCell.self, forCellReuseIdentifier: MovieTableViewCell.reuseIdentifier)
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 140
+        configureTableView()
         view.addSubview(tableView)
         
         view.addSubview(noResultsLabel)
@@ -72,7 +66,7 @@ class MovieSearchViewController: UIViewController {
                 self.noResultsLabel.isHidden = !newMovies.isEmpty
                 self.tableView.isHidden = newMovies.isEmpty
                 
-                if self.viewModel.currentPage == 1 {
+                if self.viewModel.currentPage == Constants.UI.currentPage {
                     self.movies = newMovies
                 } else {
                     self.movies.append(contentsOf: newMovies)
@@ -107,8 +101,8 @@ class MovieSearchViewController: UIViewController {
             
             noResultsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             noResultsLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            noResultsLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            noResultsLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+            noResultsLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            noResultsLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
     
@@ -121,7 +115,7 @@ class MovieSearchViewController: UIViewController {
 extension MovieSearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let query = searchBar.text, !query.isEmpty else { return }
-        Logger.log("Searched text: \(query)", level: .info)
+        Logger.log("\(Constants.Strings.placeholderText): \(query)", level: .info)
         viewModel.search(query: query)
         searchBar.resignFirstResponder()
     }
@@ -161,4 +155,40 @@ extension MovieSearchViewController: UITableViewDelegate {
     }
 }
 
+extension MovieSearchViewController {
+    private enum Constants {
+        enum Strings {
+            static let topMoviesTitle = "Top Movies"
+            static let placeholderText = "Search movie..."
+            static let magnifyingGlassIconName = "magnifyingglass"
+            static let noResultLabelText = "Something went wrong.\nPlease try again."
+        }
+        
+        enum UI {
+            static let cornerRadius: CGFloat = 8
+            static let rowHeight: CGFloat = 140
+            static let currentPage: Int = 1
+            static let labelSize: CGFloat = 16
+            static let titleFontSize: CGFloat = 22
+        }
+        
+    }
+}
 
+private extension MovieSearchViewController {
+     func configureSearchBar() {
+         searchBar.placeholder = Constants.Strings.placeholderText
+         searchBar.setLeftImage(UIImage(systemName: Constants.Strings.magnifyingGlassIconName))
+         searchBar.layer.cornerRadius = Constants.UI.cornerRadius
+         searchBar.searchTextField.adjustsFontForContentSizeCategory = true
+         searchBar.delegate = self
+     }
+    
+    func configureTableView() {
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.register(MovieTableViewCell.self, forCellReuseIdentifier: MovieTableViewCell.reuseIdentifier)
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = Constants.UI.rowHeight
+    }
+}
