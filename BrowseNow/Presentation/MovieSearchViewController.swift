@@ -158,11 +158,11 @@ extension MovieSearchViewController: UITableViewDelegate {
 
 extension MovieSearchViewController {
      func configureSearchBar() {
+         searchBar.delegate = self
          searchBar.placeholder = Constants.Strings.placeholderText
          searchBar.setLeftImage(UIImage(systemName: Constants.Strings.magnifyingGlassIconName))
          searchBar.layer.cornerRadius = Constants.UI.cornerRadius
          searchBar.searchTextField.adjustsFontForContentSizeCategory = true
-         searchBar.delegate = self
      }
     
     func configureTableView() {

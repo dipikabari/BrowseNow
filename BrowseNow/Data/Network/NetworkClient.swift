@@ -8,14 +8,23 @@
 import Foundation
 import PromiseKit
 
+protocol URLSessionProtocol {
+    func dataTask(
+        with request: URLRequest,
+        completionHandler: @Sendable @escaping (Data?, URLResponse?, Error?) -> Void
+    ) -> URLSessionDataTask
+}
+
+extension URLSession: URLSessionProtocol {}
+
 protocol NetworkClientProtocol {
     func request<T: Decodable>(endPoint: URLRequest) -> Promise<T>
 }
 
 final class NetworkClient: NetworkClientProtocol {
-    private let session: URLSession
+    private let session: URLSessionProtocol
     
-    init(session: URLSession = .shared) {
+    init(session: URLSessionProtocol = URLSession.shared) {
         self.session = session
     }
     
