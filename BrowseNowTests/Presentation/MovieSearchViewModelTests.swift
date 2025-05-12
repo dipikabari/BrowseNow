@@ -124,5 +124,4 @@ final class MovieSearchViewModelTests: XCTestCase {
         XCTAssertEqual(self.viewModel.currentPage, 2)
         XCTAssertEqual(callCount, 2)
     }
-    
 }

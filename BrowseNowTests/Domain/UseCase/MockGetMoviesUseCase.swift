@@ -28,6 +28,4 @@ final class MockGetMoviesUseCase: GetMoviesUseCase {
             return Promise.value([])
         }
     }
-    
-    
 }

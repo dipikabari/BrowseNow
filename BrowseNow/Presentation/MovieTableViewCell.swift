@@ -44,11 +44,9 @@ final class MovieTableViewCell: UITableViewCell {
         horizontalStack.axis = .horizontal
         horizontalStack.spacing = Constants.UI.defaultSpacing
         horizontalStack.alignment = .top
-       
-
+    
         contentView.addSubview(horizontalStack)
        
-        
         applyConstraints()
     }
     

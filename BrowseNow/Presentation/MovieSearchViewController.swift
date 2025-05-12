@@ -44,8 +44,6 @@ class MovieSearchViewController: UIViewController {
     }
 
     // MARK: Setup
-    
-    
     private func setupUI() {
         view.backgroundColor = .systemBackground
         title = Constants.Strings.topMoviesTitle
